@@ -8,6 +8,8 @@
     mc:Ignorable="d">
 
     <Grid Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
+        <TextBlock x:Name="textMain" HorizontalAlignment="Center" Margin="0,170,0,417" TextWrapping="Wrap" Text="Sana" VerticalAlignment="Center" Height="133" Width="1280" RenderTransformOrigin="0.5,0.5" FontSize="80"/>
+        <TextBlock x:Name="textLang1" HorizontalAlignment="Center" Margin="0,308,0,356" TextWrapping="Wrap" Text="Slovo" VerticalAlignment="Center" Height="56" Width="1280" FontSize="40"/>
 
     </Grid>
 </Page>
