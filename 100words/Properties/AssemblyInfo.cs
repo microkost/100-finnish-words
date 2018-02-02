@@ -1,12 +1,13 @@
-﻿using System.Reflection;
+﻿using System.Resources;
+using System.Reflection;
 using System.Runtime.CompilerServices;
 using System.Runtime.InteropServices;
 
 // General Information about an assembly is controlled through the following 
 // set of attributes. Change these attribute values to modify the information
 // associated with an assembly.
-[assembly: AssemblyTitle("100words")]
-[assembly: AssemblyDescription("")]
+[assembly: AssemblyTitle("100 Finnish Words")]
+[assembly: AssemblyDescription("First 100 words are most important of learning finnish language.")]
 [assembly: AssemblyConfiguration("")]
 [assembly: AssemblyCompany("")]
 [assembly: AssemblyProduct("100words")]
@@ -27,3 +28,5 @@ using System.Runtime.InteropServices;
 [assembly: AssemblyVersion("1.0.0.0")]
 [assembly: AssemblyFileVersion("1.0.0.0")]
 [assembly: ComVisible(false)]
+[assembly: NeutralResourcesLanguage("en")]
+
