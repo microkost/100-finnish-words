@@ -19,5 +19,14 @@ namespace _100words
             this.wordEN = wordEN;
             this.wordCZ = wordCZ;
         }
+
+        public List<string> ToStringList(Phrase ph)
+        {
+            List<String> result = new List<String>();
+            result.Add(ph.wordFI);
+            result.Add(ph.wordEN);
+            result.Add(ph.wordCZ);
+            return result;
+        }
     }
 }
