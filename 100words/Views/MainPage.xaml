@@ -1,19 +1,29 @@
 ﻿<Page
-    x:Class="_100words.MainPage"
+    x:Class="words100.MainPage"
     xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
-    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    Background="#E6E6E6">
 
     <Page.TopAppBar>
-        <CommandBar x:Name="CommandStripe">
+        <CommandBar x:Name="CommandStripe" Background="#CCCCCC">
             <AppBarButton x:Name="ButtonRefresh" Icon="Refresh" Label="Refresh" Click="Button_Click" />
         </CommandBar>
     </Page.TopAppBar>
     <Grid>
-        <Viewbox x:Name="vjubox" Grid.Column="0">
-            <StackPanel Orientation="Vertical" Padding="0,0,0,1">
-                <TextBlock x:Name="wFI" Text="Word FIN" Grid.Row="1" Grid.Column="0" TextAlignment="Center"/>
-                <TextBlock x:Name="wEN" Text="Word ENG" Grid.Row="2" Grid.Column="0" TextAlignment="Center"/>
-                <TextBlock x:Name="wCZ" Text="Word CZE" Grid.Row="3" Grid.Column="0" TextAlignment="Center"/>
+        <Viewbox x:Name="contentWindow" Grid.Column="0">
+            <StackPanel Orientation="Vertical" Padding="10,0,10,1">
+                <StackPanel Orientation="Horizontal">
+                    <Image x:Name="flagFI" Source="ms-appx:///Assets/flagFI.png" Width="30" Height="20" Margin="0,10,10,10"></Image>
+                    <TextBlock x:Name="wFI" Text="Word FIN" TextAlignment="Center" FontWeight="Bold" VerticalAlignment="Center"/>
+                </StackPanel>
+                <StackPanel Orientation="Horizontal">
+                    <Image x:Name="flagEN" Source="ms-appx:///Assets/flagEN.png" Width="30" Height="20" Margin="0,10,10,10" ></Image>
+                    <TextBlock x:Name="wEN" Text="Word ENG" TextAlignment="Center" VerticalAlignment="Center"/>
+                </StackPanel>
+                <StackPanel Orientation="Horizontal">
+                    <Image x:Name="flagCZ" Source="ms-appx:///Assets/flagCZ.png" Width="30" Height="20" Margin="0,10,10,10" ></Image>
+                    <TextBlock x:Name="wCZ" Text="Word CZE" TextAlignment="Center" VerticalAlignment="Center"/>
+                </StackPanel>
             </StackPanel>
 
         </Viewbox>

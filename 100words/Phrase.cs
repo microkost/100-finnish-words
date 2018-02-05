@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace _100words
+namespace words100
 {
     public class Phrase
     {

@@ -1,6 +1,6 @@
 ﻿using System.Collections.Generic;
 
-namespace _100words
+namespace words100
 {
     internal static class Dictionary
     {
