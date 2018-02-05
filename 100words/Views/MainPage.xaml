@@ -1,19 +1,23 @@
 ﻿<Page
     x:Class="_100words.MainPage"
     xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
-    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-    Width="Auto" Height="Auto">
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
 
-    <RelativePanel Name="MainWindow">
-        <CommandBar x:Name="CommandStripe" HorizontalAlignment="Stretch" RelativePanel.AlignHorizontalCenterWithPanel="True" RelativePanel.AlignTopWithPanel="True">
+    <Page.TopAppBar>
+        <CommandBar x:Name="CommandStripe">
             <AppBarButton x:Name="ButtonRefresh" Icon="Refresh" Label="Refresh" Click="Button_Click" />
         </CommandBar>
-        <Viewbox RelativePanel.Below="CommandStripe" RelativePanel.AlignHorizontalCenterWithPanel="True">
-            <StackPanel Orientation="Vertical">
-                <TextBlock x:Name="wFI" Text="Word FIN" TextAlignment="Center"/>
-                <TextBlock x:Name="wEN" Text="Word ENG" TextAlignment="Center"/>
-                <TextBlock x:Name="wCZ" Text="Word CZE" TextAlignment="Center"/>
+    </Page.TopAppBar>
+    <Grid>
+        <Viewbox x:Name="vjubox" Grid.Column="0">
+            <StackPanel Orientation="Vertical" Padding="0,0,0,1">
+                <TextBlock x:Name="wFI" Text="Word FIN" Grid.Row="1" Grid.Column="0" TextAlignment="Center"/>
+                <TextBlock x:Name="wEN" Text="Word ENG" Grid.Row="2" Grid.Column="0" TextAlignment="Center"/>
+                <TextBlock x:Name="wCZ" Text="Word CZE" Grid.Row="3" Grid.Column="0" TextAlignment="Center"/>
             </StackPanel>
+
         </Viewbox>
-    </RelativePanel>
+
+
+    </Grid>
 </Page>
