@@ -11,12 +11,12 @@ namespace words100
     public sealed partial class MainPage : Page
     {
         List<Phrase> vocabulary;
-        private static Random rng = new Random();        
+        private static Random rng = new Random();
 
         public MainPage()
         {
             this.InitializeComponent();
-            vocabulary = Dictionary.getListOfWords(); 
+            vocabulary = Dictionary.getListOfWords();
             makePhraseVisible(vocabulary.First()); //show it                                  
         }
 
@@ -58,62 +58,48 @@ namespace words100
 
         internal TileContent getNotificationScheme(string word0, string word1, string word2)
         {
+            /*
+               https://docs.microsoft.com/en-us/windows/uwp/design/shell/tiles-and-notifications/create-adaptive-tiles
+
+               TileWide
+               TileLarge (only for desktop)
+            */
+
             TileContent content = new TileContent()
             {
                 Visual = new TileVisual()
                 {
-                    TileMedium = new TileBinding()
-                    {
-                        Content = new TileBindingContentAdaptive()
-                        {
-                            Children =
-                {
-                    new AdaptiveText()
-                    {
-                        Text = word0
-                    },
+                    Branding = TileBranding.Logo,
+                    //Branding = TileBranding.NameAndLogo, //name should be name of list
 
-                    new AdaptiveText()
-                    {
-                        Text = word1,
-                        HintStyle = AdaptiveTextStyle.CaptionSubtle
-                    },
+                    //TileLarge (only for desktop)
 
-                    new AdaptiveText()
-                    {
-                        Text = word2,
-                        HintStyle = AdaptiveTextStyle.CaptionSubtle
-                    }
-                }
-                        }
-                    },
-
+                    
                     TileWide = new TileBinding()
                     {
                         Content = new TileBindingContentAdaptive()
                         {
                             Children =
-                {
-                    new AdaptiveText()
-                    {
-                        Text = word0,
-                        HintStyle = AdaptiveTextStyle.Subtitle
-                    },
+                            {
+                                new AdaptiveText()
+                                {
+                                    Text = word0,
+                                    HintStyle = AdaptiveTextStyle.SubheaderNumeral
+                                },
 
-                    new AdaptiveText()
-                    {
-                        Text = word1,
-                        HintStyle = AdaptiveTextStyle.CaptionSubtle
-                    },
-
-                    new AdaptiveText()
-                    {
-                        Text = word2,
-                        HintStyle = AdaptiveTextStyle.CaptionSubtle
-                    }
-                }
+                                new AdaptiveText()
+                                {
+                                    Text = String.Format("{0} / {1}", word1, word2),
+                                    HintStyle = AdaptiveTextStyle.Subtitle,
+                                    HintWrap = true
+                                },
+                            }
                         }
-                    }
+                    },
+
+                    //TileMedium
+
+                    //TileSmall                    
                 }
             };
             return content;
