@@ -9,7 +9,7 @@ using System.Runtime.InteropServices;
 [assembly: AssemblyTitle("100 Finnish Words")]
 [assembly: AssemblyDescription("First 100 words are most important of learning finnish language.")]
 [assembly: AssemblyConfiguration("")]
-[assembly: AssemblyCompany("")]
+[assembly: AssemblyCompany("ivo@kostecky.cz")]
 [assembly: AssemblyProduct("100words")]
 [assembly: AssemblyCopyright("Copyright ©  2018")]
 [assembly: AssemblyTrademark("")]

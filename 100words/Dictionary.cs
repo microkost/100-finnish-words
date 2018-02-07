@@ -4,7 +4,7 @@ namespace words100
 {
     internal static class Dictionary
     {
-        public static List<Phrase> getListOfWords()
+        public static List<Phrase> GetListOfWords()
         {
             //basic 100
             List<Phrase> dict = new List<Phrase>()
