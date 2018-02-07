@@ -6,7 +6,7 @@
 
     <Page.TopAppBar>
         <CommandBar x:Name="CommandStripe" Background="#CCCCCC">
-            <AppBarButton x:Name="ButtonRefresh" Icon="Refresh" Label="Refresh" Click="Button_Click" />
+            <AppBarButton x:Name="ButtonRefresh" Icon="Shuffle" Label="Shuffle" Click="Button_Click" />
         </CommandBar>
     </Page.TopAppBar>
     <Grid>

@@ -5,25 +5,59 @@ using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
 using Windows.UI.Notifications;
 using Microsoft.Toolkit.Uwp.Notifications; // Notifications library
+using Windows.Foundation.Collections;
 
 namespace words100
 {
     public sealed partial class MainPage : Page
     {
-        List<Phrase> vocabulary;
+        List<Phrase> vocabulary; //globally used vocabulary
         private static Random rng = new Random();
+
+        //settings
+        Windows.Storage.ApplicationDataContainer localSettings = Windows.Storage.ApplicationData.Current.LocalSettings;
+        Windows.Storage.StorageFolder localFolder = Windows.Storage.ApplicationData.Current.LocalFolder;
+
+        //refresh
+        //DispatcherTimer dispatcherTimer;
 
         public MainPage()
         {
             this.InitializeComponent();
+
             vocabulary = Dictionary.GetListOfWords();
-            MakePhraseVisible(vocabulary.First()); //show it                                  
+            RefreshVocabulary();
+
+            var refreshTimeFromSettings = localSettings.Values["100wordsRefreshTime"];
+            if (refreshTimeFromSettings == null)
+            {
+                //= 10; //set time default
+            }
+            else
+            {
+                //timer is x = refreshTimeFromSettings;
+            }
+
+            //dispatcherTimer uwp call method every hour
+
+            //uwp settings menu : timer value, language order, reminder of live tile
+            //change timer
+            //localSettings.Values["100wordsRefreshTime"] = 1;
+        }
+        internal void RefreshVocabulary()
+        {
+            vocabulary = Shuffle(vocabulary); //mix it
+            if (vocabulary.Count == 0) //last word is removed
+            {
+                vocabulary = Dictionary.GetListOfWords(); //get new words
+                vocabulary = Shuffle(vocabulary); //randomize first one
+            }
+            MakePhraseVisible(vocabulary.First()); //show it
         }
 
         private void Button_Click(object sender, RoutedEventArgs e)
         {
-            vocabulary = Shuffle(vocabulary); //mix it
-            MakePhraseVisible(vocabulary.First()); //show it
+            RefreshVocabulary(); //called from gui
         }
 
         public void MakePhraseVisible(Phrase phrase)
@@ -37,15 +71,24 @@ namespace words100
             wCZ.Text = lang2;
 
             var notification = new TileNotification(GetNotificationScheme(lang0, lang1, lang2).GetXml());
-            //notification.ExpirationTime = DateTimeOffset.UtcNow.AddMinutes(10);
+            //notification.ExpirationTime = DateTimeOffset.UtcNow.AddMinutes(1); //how long from active to just logo
             TileUpdateManager.CreateTileUpdaterForApplication().Update(notification);
             return;
         }
 
-        public List<Phrase> Shuffle<Phrase>(List<Phrase> list)
+        public List<Phrase> Shuffle<Phrase>(List<Phrase> list) //mixing available dictionary to show first element
         {
+            try
+            {
+                list.RemoveAt(0); //remove already showed word
+            }
+            catch
+            {
+                return null; //when last word was removed
+            }
+            
             int n = list.Count;
-            while (n > 1)
+            while (n > 1) //doing mixing
             {
                 n--;
                 int k = rng.Next(n + 1);
@@ -53,6 +96,7 @@ namespace words100
                 list[k] = list[n];
                 list[n] = value;
             }
+
             return list;
         }
 
@@ -63,7 +107,7 @@ namespace words100
             TileContent content = new TileContent()
             {
                 Visual = new TileVisual()
-                {                    
+                {
                     DisplayName = "100 finnish words",
                     Branding = TileBranding.NameAndLogo, //text should be name of dictionary
 
