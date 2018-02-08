@@ -4,23 +4,20 @@ using System.Linq;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
 using Windows.UI.Notifications;
-using Microsoft.Toolkit.Uwp.Notifications; // Notifications library
-using Windows.Foundation.Collections;
+using Microsoft.Toolkit.Uwp.Notifications; //tile design library
 
 namespace words100
 {
     public sealed partial class MainPage : Page
     {
         List<Phrase> vocabulary; //globally used vocabulary
+        DispatcherTimer dispatcherTimer; //refresh values event
         private static Random rng = new Random();
-
-        //settings
+        
+        //static settings in computer
         Windows.Storage.ApplicationDataContainer localSettings = Windows.Storage.ApplicationData.Current.LocalSettings;
         Windows.Storage.StorageFolder localFolder = Windows.Storage.ApplicationData.Current.LocalFolder;
-
-        //refresh
-        //DispatcherTimer dispatcherTimer;
-
+            
         public MainPage()
         {
             this.InitializeComponent();
@@ -39,10 +36,13 @@ namespace words100
             }
 
             //dispatcherTimer uwp call method every hour
+            DispatcherTimerSetup();
+
 
             //uwp settings menu : timer value, language order, reminder of live tile
             //change timer
             //localSettings.Values["100wordsRefreshTime"] = 1;
+
         }
         internal void RefreshVocabulary()
         {
@@ -52,7 +52,7 @@ namespace words100
                 vocabulary = Dictionary.GetListOfWords(); //get new words
                 vocabulary = Shuffle(vocabulary); //randomize first one
             }
-            MakePhraseVisible(vocabulary.First()); //show it
+            MakePhraseVisible(vocabulary.First()); //show it            
         }
 
         private void Button_Click(object sender, RoutedEventArgs e)
@@ -73,6 +73,7 @@ namespace words100
             var notification = new TileNotification(GetNotificationScheme(lang0, lang1, lang2).GetXml());
             //notification.ExpirationTime = DateTimeOffset.UtcNow.AddMinutes(1); //how long from active to just logo
             TileUpdateManager.CreateTileUpdaterForApplication().Update(notification);
+
             return;
         }
 
@@ -86,7 +87,7 @@ namespace words100
             {
                 return null; //when last word was removed
             }
-            
+
             int n = list.Count;
             while (n > 1) //doing mixing
             {
@@ -98,6 +99,20 @@ namespace words100
             }
 
             return list;
+        }
+        public void DispatcherTimerSetup()
+        {
+            dispatcherTimer = new DispatcherTimer();
+            dispatcherTimer.Tick += DispatcherTimer_TimeElapsedEvent;
+            dispatcherTimer.Interval = TimeSpan.FromSeconds(10);
+            //dispatcherTimer.Interval = new TimeSpan(0, 1, 0); //represents three hours and thirty minutes new TimeSpan(3, 30, 0);
+            dispatcherTimer.Start(); //IsEnabled should now be true after calling start
+        }
+        void DispatcherTimer_TimeElapsedEvent(object sender, object e) //countdown event method
+        {
+            dispatcherTimer.Stop();
+            RefreshVocabulary(); //reoder vocabulary and show it again
+            dispatcherTimer.Start();
         }
 
         internal TileContent GetNotificationScheme(string word0, string word1, string word2)
