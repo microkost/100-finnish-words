@@ -11,7 +11,7 @@
             <AppBarButton x:Name="Settings" Icon="Setting" Label="Settings" Click="{x:Bind ToggleEditState}" />
         </CommandBar>
     </Page.TopAppBar>
-    
+
     <Grid>
         <Viewbox x:Name="contentWindow" Grid.Column="0">
             <StackPanel Orientation="Vertical" Padding="10,0,10,1">
@@ -32,53 +32,16 @@
 
         <SplitView Name="SettingsView" DisplayMode="Inline" PanePlacement="Right">
             <SplitView.Pane>
-                <ScrollViewer>
-                    <Grid x:Name="EditControlsGrid"
-                          HorizontalAlignment="Stretch"
-                          Margin="24,48,24,24">
-                        
-                        <Grid.ColumnDefinitions>
-                            <ColumnDefinition MinWidth="144" />
-                            <ColumnDefinition />
-                        </Grid.ColumnDefinitions>
-                        <Grid.RowDefinitions>
-                            <RowDefinition Height="Auto" />
-                            <RowDefinition Height="Auto" />
-                            <RowDefinition Height="Auto" />
-                            <RowDefinition Height="Auto" />
-                            <RowDefinition Height="Auto" />
-                            <RowDefinition Height="Auto" />
-                            <RowDefinition Height="Auto" />
-                            <RowDefinition Height="Auto" />
-                            <RowDefinition Height="*" />
-                        </Grid.RowDefinitions>
+                <ScrollViewer Margin="24,48,24,24">
+                    <StackPanel Margin="5">
                         <TextBox x:Name="TitleEditBox"
-                                 Header="Title"
-                                 Height="80"                                 
-                                 Padding="12"
-                                 Grid.ColumnSpan="2" />
-                                                   
-
-                       
-                        <Grid Grid.Row="8"
-                              Grid.ColumnSpan="2"
-                              VerticalAlignment="Bottom">
-                            <Grid.ColumnDefinitions>
-                                <ColumnDefinition />
-                                <ColumnDefinition />
-                            </Grid.ColumnDefinitions>
-                            <Grid.RowDefinitions>
-                                <RowDefinition Height="Auto" />
-                                <RowDefinition Height="Auto" />
-                            </Grid.RowDefinitions>
-   
-                            <Button Content="Save..."
-                                    Grid.Column="1"
-                                    Margin="2,0,0,0"
-                                    HorizontalAlignment="Stretch"
-                                     />
-                        </Grid>
-                    </Grid>
+                                 Header="Title"                                 
+                                 />
+                        <Button Content="Save..."/>
+                        <TextBox Text="hello" />
+                        <Button Content="hello" />
+                        <Button Content="hello" />
+                    </StackPanel>
                 </ScrollViewer>
             </SplitView.Pane>
 
@@ -86,5 +49,5 @@
         </SplitView>
 
     </Grid>
-    
+
 </Page>
