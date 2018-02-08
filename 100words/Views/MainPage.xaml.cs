@@ -25,23 +25,19 @@ namespace words100
             vocabulary = Dictionary.GetListOfWords();
             RefreshVocabulary();
 
-            var refreshTimeFromSettings = localSettings.Values["100wordsRefreshTime"];
-            if (refreshTimeFromSettings == null)
+            //automatic refresh of dictionary            
+            if (Double.TryParse((string)localSettings.Values["100wordsRefreshTime"], out double timerValue))
             {
-                //= 10; //set time default
+                DispatcherTimerSetup(TimeSpan.FromHours(timerValue)); //(hh:mm:ss)
             }
             else
             {
-                //timer is x = refreshTimeFromSettings;
+                DispatcherTimerSetup(new TimeSpan(0, 1, 0)); //set time default when not saved (hh:mm:ss)
             }
-
-            //dispatcherTimer uwp call method every hour
-            DispatcherTimerSetup();
-
 
             //uwp settings menu : timer value, language order, reminder of live tile
             //change timer
-            //localSettings.Values["100wordsRefreshTime"] = 1;
+            //localSettings.Values["100wordsRefreshTime"] = "1";
 
         }
         internal void RefreshVocabulary()
@@ -100,19 +96,38 @@ namespace words100
 
             return list;
         }
-        public void DispatcherTimerSetup()
+        public void DispatcherTimerSetup(TimeSpan ts)
         {
             dispatcherTimer = new DispatcherTimer();
             dispatcherTimer.Tick += DispatcherTimer_TimeElapsedEvent;
-            dispatcherTimer.Interval = TimeSpan.FromSeconds(10);
-            //dispatcherTimer.Interval = new TimeSpan(0, 1, 0); //represents three hours and thirty minutes new TimeSpan(3, 30, 0);
-            dispatcherTimer.Start(); //IsEnabled should now be true after calling start
+            dispatcherTimer.Interval = ts;
+            dispatcherTimer.Start();
         }
         void DispatcherTimer_TimeElapsedEvent(object sender, object e) //countdown event method
         {
             dispatcherTimer.Stop();
             RefreshVocabulary(); //reoder vocabulary and show it again
             dispatcherTimer.Start();
+        }
+
+        private void ToggleEditState()
+        {
+            //https://docs.microsoft.com/en-us/windows/uwp/design/controls-and-patterns/split-view
+
+            if (SettingsView.IsPaneOpen)
+            {
+                SettingsView.IsPaneOpen = false;
+            }
+            else
+            {
+                /*
+                if (!editingInitialized)
+                {
+                    InitializeCompositor();
+                }
+                */
+                SettingsView.IsPaneOpen = true;
+            }
         }
 
         internal TileContent GetNotificationScheme(string word0, string word1, string word2)
