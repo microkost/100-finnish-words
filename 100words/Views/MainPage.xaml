@@ -6,13 +6,13 @@
 
     <Page.TopAppBar>
         <CommandBar x:Name="CommandStripe" Background="#CCCCCC">
-            <AppBarButton x:Name="ButtonRefresh" Icon="Shuffle" Label="Shuffle" Click="Button_Click" />
-            <!--<AppBarSeparator/>-->
-            <AppBarButton x:Name="Settings" Icon="Setting" Label="Settings" Click="{x:Bind ToggleEditState}" />
+            <AppBarButton x:Name="ButtonShuffle" Icon="Shuffle" Label="Shuffle" Click="ButtonShuffle_Click" />
+            <AppBarButton x:Name="Settings" Icon="Setting" Label="Settings" Click="{x:Bind MenuSettingsChangeVisibility}" />
         </CommandBar>
     </Page.TopAppBar>
 
     <Grid>
+        <!-- main content -->
         <Viewbox x:Name="contentWindow" Grid.Column="0">
             <StackPanel Orientation="Vertical" Padding="10,0,10,1">
                 <StackPanel Orientation="Horizontal">
@@ -33,15 +33,60 @@
         <SplitView Name="SettingsView" DisplayMode="Inline" PanePlacement="Right">
             <SplitView.Pane>
                 <ScrollViewer Margin="24,48,24,24">
-                    <StackPanel Margin="5">
-                        <TextBox x:Name="TitleEditBox"
-                                 Header="Title"                                 
-                                 />
-                        <Button Content="Save..."/>
-                        <TextBox Text="hello" />
-                        <Button Content="hello" />
-                        <Button Content="hello" />
-                    </StackPanel>
+                    <ItemsControl>
+                        <TextBox x:Name="UpdateTime"
+                                 Text="120"
+                                 Header="Phrase update time in minutes"                                 
+                                 InputScope="Number" 
+                                 AcceptsReturn="False"
+                                 TextWrapping="NoWrap"
+                                 Margin="0,0,0,20"/>
+
+                        <ComboBox x:Name="Language1" 
+                                  Header="Primary language"           
+                                  ItemsSource="{x:Bind languages}"
+                                  SelectedItem="{x:Bind languages[0], Mode=OneWay}"
+                                  HorizontalAlignment="Stretch"                                  
+                                  FlowDirection="RightToLeft"                                  
+                                  Margin="0,0,0,20" />
+
+                        <ComboBox x:Name="Language2" 
+                                  Header="Secondary language"           
+                                  ItemsSource="{x:Bind languages}"
+                                  SelectedItem="{x:Bind languages[1], Mode=OneWay}"
+                                  HorizontalAlignment="Stretch"
+                                  FlowDirection="RightToLeft"                                  
+                                  Margin="0,0,0,20" />
+
+                        <ComboBox x:Name="Language3" 
+                                  Header="Tertiary language"
+                                  ItemsSource="{x:Bind languages}"
+                                  SelectedItem="{x:Bind languages[2], Mode=OneWay}"
+                                  HorizontalAlignment="Stretch"
+                                  FlowDirection="RightToLeft"
+                                  Margin="0,0,0,20"/>
+
+                        <Button Content="Add start menu live tile" 
+                                HorizontalAlignment="Stretch"                                
+                                Click="ButtonTile_Click"
+                                Margin="0,0,0,20" />
+                        
+                        <Button Content="Save settings" 
+                                HorizontalAlignment="Stretch"                                
+                                Click="ButtonSaveSettings_Click"
+                                Margin="0,0,0,20" />
+
+                        <TextBlock TextWrapping="WrapWholeWords" TextAlignment="Justify">
+                            <Span xml:space="preserve"><Run>This app is intended for fun and is fan based. Author appreciate new </Run><Hyperlink NavigateUri="https://goo.gl/forms/a72Osyz1Bpu4mqq22">phrase suggestions and correction</Hyperlink><Run>. You can also provide direct feedback and feature suggestions via that link.</Run></Span>
+                        </TextBlock>
+
+                        <TextBlock Text="{Binding .}"/>
+                        <TextBlock Style="{StaticResource CaptionTextBlockStyle}" TextAlignment="Right">
+                            <Span xml:space="preserve"><Run>Version: 1.0.0000 </Run></Span>
+                            <Span xml:space="preserve"><Run>Author: </Run><Hyperlink NavigateUri="http://www.kostecky.cz">Ivo Kostecký</Hyperlink></Span>
+                        </TextBlock>
+
+                    </ItemsControl>
                 </ScrollViewer>
             </SplitView.Pane>
 

@@ -10,34 +10,39 @@ namespace words100
 {
     public sealed partial class MainPage : Page
     {
+        List<String> languages; //names of available languages, index numbers are keys
         List<Phrase> vocabulary; //globally used vocabulary
-        DispatcherTimer dispatcherTimer; //refresh values event
+        DispatcherTimer dispatcherTimer; //refresh values event countdown
         private static Random rng = new Random();
         
         //static settings in computer
         Windows.Storage.ApplicationDataContainer localSettings = Windows.Storage.ApplicationData.Current.LocalSettings;
-        Windows.Storage.StorageFolder localFolder = Windows.Storage.ApplicationData.Current.LocalFolder;
-            
+        Windows.Storage.StorageFolder localFolder = Windows.Storage.ApplicationData.Current.LocalFolder;              
+
         public MainPage()
         {
-            this.InitializeComponent();
+            languages = Dictionary.GetListOfLanguages(); //name of used languages
+            vocabulary = Dictionary.GetListOfWords(); //full dictionary
 
-            vocabulary = Dictionary.GetListOfWords();
-            RefreshVocabulary();
+            this.InitializeComponent();           
+            RefreshVocabulary(); //show smth
 
-            //automatic refresh of dictionary            
+            //automatic timebased refresh of dictionary            
             if (Double.TryParse((string)localSettings.Values["100wordsRefreshTime"], out double timerValue))
             {
                 DispatcherTimerSetup(TimeSpan.FromHours(timerValue)); //(hh:mm:ss)
+                UpdateTime.Text = timerValue.ToString();
             }
-            else
+            else //failure
             {
-                DispatcherTimerSetup(new TimeSpan(0, 1, 0)); //set time default when not saved (hh:mm:ss)
-            }
+                int value = 120;
+                DispatcherTimerSetup(new TimeSpan(0, value, 0)); //set time default when not saved (hh:mm:ss)
+                UpdateTime.Text = value.ToString();
+            }            
 
             //uwp settings menu : timer value, language order, reminder of live tile
             //change timer
-            //localSettings.Values["100wordsRefreshTime"] = "1";
+            //
 
         }
         internal void RefreshVocabulary()
@@ -51,9 +56,40 @@ namespace words100
             MakePhraseVisible(vocabulary.First()); //show it            
         }
 
-        private void Button_Click(object sender, RoutedEventArgs e)
+        private void ButtonShuffle_Click(object sender, RoutedEventArgs e)
         {
             RefreshVocabulary(); //called from gui
+        }
+
+        private void ButtonTile_Click(object sender, RoutedEventArgs e)
+        {
+            return;
+        }        
+
+        private void ButtonSaveSettings_Click(object sender, RoutedEventArgs e)
+        {
+            //time change
+            dispatcherTimer.Stop();
+            if (Double.TryParse(UpdateTime.Text, out double timerValue))
+            {
+                DispatcherTimerSetup(TimeSpan.FromMinutes(timerValue));
+                localSettings.Values["100wordsRefreshTime"] = timerValue.ToString();                
+            }
+            else //failure
+            {
+                int value = 120;
+                DispatcherTimerSetup(new TimeSpan(0, value, 0)); //set time default (hh:mm:ss)
+                UpdateTime.Text = value.ToString();
+            }            
+            dispatcherTimer.Start();
+
+            //lang selection
+
+
+
+            MenuSettingsChangeVisibility(); //close menu
+
+            return;
         }
 
         public void MakePhraseVisible(Phrase phrase)
@@ -103,6 +139,7 @@ namespace words100
             dispatcherTimer.Interval = ts;
             dispatcherTimer.Start();
         }
+
         void DispatcherTimer_TimeElapsedEvent(object sender, object e) //countdown event method
         {
             dispatcherTimer.Stop();
@@ -110,7 +147,7 @@ namespace words100
             dispatcherTimer.Start();
         }
 
-        private void ToggleEditState()
+        private void MenuSettingsChangeVisibility() //used for opening menu view
         {
             //https://docs.microsoft.com/en-us/windows/uwp/design/controls-and-patterns/split-view
 
@@ -120,17 +157,11 @@ namespace words100
             }
             else
             {
-                /*
-                if (!editingInitialized)
-                {
-                    InitializeCompositor();
-                }
-                */
                 SettingsView.IsPaneOpen = true;
             }
         }
 
-        internal TileContent GetNotificationScheme(string word0, string word1, string word2)
+        internal TileContent GetNotificationScheme(string word0, string word1, string word2) //creating tile "XML" file
         {
             //https://docs.microsoft.com/en-us/windows/uwp/design/shell/tiles-and-notifications/create-adaptive-tiles
 
