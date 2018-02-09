@@ -66,6 +66,14 @@
                                   FlowDirection="RightToLeft"
                                   Margin="0,0,0,20"/>
 
+                        <ComboBox x:Name="Language4" 
+                                  Header="Quaternary language"
+                                  ItemsSource="{x:Bind languages}"
+                                  SelectedItem="{x:Bind languages[3], Mode=OneWay}"
+                                  HorizontalAlignment="Stretch"
+                                  FlowDirection="RightToLeft"
+                                  Margin="0,0,0,20"/>
+
                         <Button Content="Add start menu live tile" 
                                 HorizontalAlignment="Stretch"                                
                                 Click="ButtonTile_Click"

@@ -7,11 +7,12 @@ namespace words100
         public static List<string> GetListOfLanguages() 
         {
             List<string> lang = new List<string>(); //manually managed
+            //if less than 3 then update code! (index null reference)
             lang.Add("Finnish");
             lang.Add("English");
             lang.Add("Czech");
             lang.Add("Polish");
-            return lang;
+            return lang;            
         }
 
         public static List<Phrase> GetListOfWords()
@@ -19,10 +20,11 @@ namespace words100
             //basic 100
             List<Phrase> dict = new List<Phrase>() //manually managed
             {
-                new Phrase("Suomi", "English", "Česky"), //this first line is never show
-                new Phrase("Moi", "Hello", "Ahoj"),
-                new Phrase("Heippa", "Bye", "Nashledanou"),
-                new Phrase("Olla", "To be", "Mít")
+                new Phrase("Suomi", "English", "Česky", "Polski"), //this first line is never showed
+                new Phrase("Moi", "Hello", "Ahoj", "Cześć"),
+                new Phrase("Heippa", "Bye", "Nashledanou", "Do widzenia"),
+                new Phrase("Olla", "To be", "Být", "Być")
+                //more phrases should be added withoud additional changes
             };
 
             //extended

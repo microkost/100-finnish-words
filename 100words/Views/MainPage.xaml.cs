@@ -15,7 +15,7 @@ namespace words100
         DispatcherTimer dispatcherTimer; //refresh values event countdown
         private static Random rng = new Random();
         
-        //static settings in computer
+        //permanent settings in computer
         Windows.Storage.ApplicationDataContainer localSettings = Windows.Storage.ApplicationData.Current.LocalSettings;
         Windows.Storage.StorageFolder localFolder = Windows.Storage.ApplicationData.Current.LocalFolder;              
 
@@ -25,7 +25,7 @@ namespace words100
             vocabulary = Dictionary.GetListOfWords(); //full dictionary
 
             this.InitializeComponent();           
-            RefreshVocabulary(); //show smth
+            RefreshVocabulary(); //shuffle & show
 
             //automatic timebased refresh of dictionary            
             if (Double.TryParse((string)localSettings.Values["100wordsRefreshTime"], out double timerValue))
@@ -38,11 +38,10 @@ namespace words100
                 int value = 120;
                 DispatcherTimerSetup(new TimeSpan(0, value, 0)); //set time default when not saved (hh:mm:ss)
                 UpdateTime.Text = value.ToString();
-            }            
+            }
 
-            //uwp settings menu : timer value, language order, reminder of live tile
-            //change timer
-            //
+            //should do notification when change
+            //should be visible on lockscreen
 
         }
         internal void RefreshVocabulary()
@@ -56,14 +55,29 @@ namespace words100
             MakePhraseVisible(vocabulary.First()); //show it            
         }
 
+        public void MakePhraseVisible(Phrase phrase) //+ List<int> selectedIndexes
+        {
+            string lang0 = phrase.wordFI;
+            string lang1 = phrase.wordEN;
+            string lang2 = phrase.wordCZ;
+
+            wFI.Text = lang0;
+            //set appropriate flah
+            wEN.Text = lang1;
+            //set appropriate flah
+            wCZ.Text = lang2;
+            //set appropriate flah
+
+            var notification = new TileNotification(GetNotificationScheme(lang0, lang1, lang2).GetXml());
+            //notification.ExpirationTime = DateTimeOffset.UtcNow.AddMinutes(1); //how long from active to just logo
+            TileUpdateManager.CreateTileUpdaterForApplication().Update(notification);
+
+            return;
+        }
+
         private void ButtonShuffle_Click(object sender, RoutedEventArgs e)
         {
             RefreshVocabulary(); //called from gui
-        }
-
-        private void ButtonTile_Click(object sender, RoutedEventArgs e)
-        {
-            return;
         }        
 
         private void ButtonSaveSettings_Click(object sender, RoutedEventArgs e)
@@ -84,30 +98,21 @@ namespace words100
             dispatcherTimer.Start();
 
             //lang selection
-
-
+            List<String> langOrder = new List<String>();
+            langOrder.Add(Language1.SelectedItem.ToString());
+            langOrder.Add(Language2.SelectedItem.ToString());
+            langOrder.Add(Language3.SelectedItem.ToString());
+            langOrder.Add(Language4.SelectedItem.ToString());
+            //process that list
 
             MenuSettingsChangeVisibility(); //close menu
 
             return;
         }
-
-        public void MakePhraseVisible(Phrase phrase)
+        private void ButtonTile_Click(object sender, RoutedEventArgs e)
         {
-            string lang0 = phrase.wordFI;
-            string lang1 = phrase.wordEN;
-            string lang2 = phrase.wordCZ;
-
-            wFI.Text = lang0;
-            wEN.Text = lang1;
-            wCZ.Text = lang2;
-
-            var notification = new TileNotification(GetNotificationScheme(lang0, lang1, lang2).GetXml());
-            //notification.ExpirationTime = DateTimeOffset.UtcNow.AddMinutes(1); //how long from active to just logo
-            TileUpdateManager.CreateTileUpdaterForApplication().Update(notification);
-
             return;
-        }
+        }     
 
         public List<Phrase> Shuffle<Phrase>(List<Phrase> list) //mixing available dictionary to show first element
         {
