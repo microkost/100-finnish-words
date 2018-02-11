@@ -5,6 +5,7 @@ using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
 using Windows.UI.Notifications;
 using Microsoft.Toolkit.Uwp.Notifications; //tile design library
+using Windows.UI.Xaml.Media.Imaging;
 
 namespace words100
 {
@@ -14,17 +15,24 @@ namespace words100
         List<Phrase> vocabulary; //globally used vocabulary
         DispatcherTimer dispatcherTimer; //refresh values event countdown
         private static Random rng = new Random();
-        
+
         //permanent settings in computer
         Windows.Storage.ApplicationDataContainer localSettings = Windows.Storage.ApplicationData.Current.LocalSettings;
-        Windows.Storage.StorageFolder localFolder = Windows.Storage.ApplicationData.Current.LocalFolder;              
 
         public MainPage()
-        {
-            languages = Dictionary.GetListOfLanguages(); //name of used languages
-            vocabulary = Dictionary.GetListOfWords(); //full dictionary
+        {            
+            vocabulary = Dictionary.GetListOfWords(); //loading default dictionary
 
-            this.InitializeComponent();           
+            try //languages order settings from permanent storage
+            {
+                languages = ((string[])localSettings.Values["100wordsLanguageOrder"]).ToList();
+            }
+            catch
+            {
+                languages = Dictionary.GetListOfLanguages(); //names of used languages, hardcoded in Dictionary
+            }
+            
+            this.InitializeComponent(); //gui start
             RefreshVocabulary(); //shuffle & show
 
             //automatic timebased refresh of dictionary            
@@ -52,23 +60,72 @@ namespace words100
                 vocabulary = Dictionary.GetListOfWords(); //get new words
                 vocabulary = Shuffle(vocabulary); //randomize first one
             }
-            MakePhraseVisible(vocabulary.First()); //show it            
+          //MakePhraseVisible(vocabulary.First()); //show it regardless order
+            MakePhraseVisible(vocabulary.First(), languages); //show it            
         }
 
-        public void MakePhraseVisible(Phrase phrase) //+ List<int> selectedIndexes
+        public void MakePhraseVisible(Phrase phrase) //emergency variant with hardcoded language order
         {
-            string lang0 = phrase.wordFI;
-            string lang1 = phrase.wordEN;
-            string lang2 = phrase.wordCZ;
+            Word0.Text = phrase.wordFI;
+            Word0Flag.Source = new BitmapImage(new Uri("ms-appx:///Assets/flagFI.png", UriKind.Absolute));
+            Word1.Text = phrase.wordEN;
+            Word1Flag.Source = new BitmapImage(new Uri("ms-appx:///Assets/flagEN.png", UriKind.Absolute));
+            Word2.Text = phrase.wordCZ;
+            Word2Flag.Source = new BitmapImage(new Uri("ms-appx:///Assets/flagCZ.png", UriKind.Absolute));
+            Word3.Text = phrase.wordPL;
+            Word3Flag.Source = new BitmapImage(new Uri("ms-appx:///Assets/flagPL.png", UriKind.Absolute));
 
-            wFI.Text = lang0;
-            //set appropriate flah
-            wEN.Text = lang1;
-            //set appropriate flah
-            wCZ.Text = lang2;
-            //set appropriate flah
+            var notification = new TileNotification(GetNotificationScheme(phrase.wordFI, phrase.wordEN, phrase.wordCZ, phrase.wordPL).GetXml());            
+            TileUpdateManager.CreateTileUpdaterForApplication().Update(notification);
+            return;
+        }
 
-            var notification = new TileNotification(GetNotificationScheme(lang0, lang1, lang2).GetXml());
+        public void MakePhraseVisible(Phrase phrase, List<String> specifiedOrder)
+        {
+            if (specifiedOrder.Count < 4) //cannot use then...
+            {
+                MakePhraseVisible(phrase);
+            }
+
+            List<Tuple<string, string>> phraseInOrder = new List<Tuple<string, string>>();
+
+            for(int i = 0; i < Dictionary.GetListOfLanguages().Count(); i++)
+            {
+                if (specifiedOrder[i].Equals("Finnish"))
+                {
+                    phraseInOrder.Add(new Tuple<string, string>(phrase.wordFI, "ms-appx:///Assets/flagFI.png"));
+                    continue;
+                }
+
+                if (specifiedOrder[i].Equals("English"))
+                {
+                    phraseInOrder.Add(new Tuple<string, string>(phrase.wordEN, "ms-appx:///Assets/flagEN.png"));                    
+                    continue;
+                }
+
+                if (specifiedOrder[i].Equals("Czech"))
+                {
+                    phraseInOrder.Add(new Tuple<string, string>(phrase.wordCZ, "ms-appx:///Assets/flagCZ.png"));
+                    continue;
+                }
+
+                if (specifiedOrder[i].Equals("Polish"))
+                {
+                    phraseInOrder.Add(new Tuple<string, string>(phrase.wordPL, "ms-appx:///Assets/flagPL.png"));
+                    continue;
+                }
+            }
+
+            Word0.Text = phraseInOrder[0].Item1;
+            Word0Flag.Source = new BitmapImage(new Uri(phraseInOrder[0].Item2, UriKind.Absolute));
+            Word1.Text = phraseInOrder[1].Item1;
+            Word1Flag.Source = new BitmapImage(new Uri(phraseInOrder[1].Item2, UriKind.Absolute));
+            Word2.Text = phraseInOrder[2].Item1;
+            Word2Flag.Source = new BitmapImage(new Uri(phraseInOrder[2].Item2, UriKind.Absolute));
+            Word3.Text = phraseInOrder[3].Item1;
+            Word3Flag.Source = new BitmapImage(new Uri(phraseInOrder[3].Item2, UriKind.Absolute));
+
+            var notification = new TileNotification(GetNotificationScheme(phraseInOrder[0].Item1, phraseInOrder[1].Item1, phraseInOrder[2].Item1, phraseInOrder[3].Item1).GetXml());
             //notification.ExpirationTime = DateTimeOffset.UtcNow.AddMinutes(1); //how long from active to just logo
             TileUpdateManager.CreateTileUpdaterForApplication().Update(notification);
 
@@ -78,24 +135,24 @@ namespace words100
         private void ButtonShuffle_Click(object sender, RoutedEventArgs e)
         {
             RefreshVocabulary(); //called from gui
-        }        
+        }
 
-        private void ButtonSaveSettings_Click(object sender, RoutedEventArgs e)
+        private void ButtonSaveSettings_Click(object sender, RoutedEventArgs e) //process gui settings
         {
             //time change
-            dispatcherTimer.Stop();
+            dispatcherTimer.Stop(); //by default running
             if (Double.TryParse(UpdateTime.Text, out double timerValue))
             {
                 DispatcherTimerSetup(TimeSpan.FromMinutes(timerValue));
-                localSettings.Values["100wordsRefreshTime"] = timerValue.ToString();                
+                localSettings.Values["100wordsRefreshTime"] = timerValue.ToString();
             }
-            else //failure
+            else //failure time change
             {
                 int value = 120;
                 DispatcherTimerSetup(new TimeSpan(0, value, 0)); //set time default (hh:mm:ss)
                 UpdateTime.Text = value.ToString();
-            }            
-            dispatcherTimer.Start();
+            }
+            dispatcherTimer.Start(); //let's go again
 
             //lang selection
             List<String> langOrder = new List<String>();
@@ -103,16 +160,21 @@ namespace words100
             langOrder.Add(Language2.SelectedItem.ToString());
             langOrder.Add(Language3.SelectedItem.ToString());
             langOrder.Add(Language4.SelectedItem.ToString());
-            //process that list
+            languages = langOrder; //save globally for later usage (refresh)
 
+            MakePhraseVisible(vocabulary.First(), languages); //process that list
+            localSettings.Values["100wordsLanguageOrder"] = languages.ToArray(); //save it for restart
+
+            //some confirmation?
             MenuSettingsChangeVisibility(); //close menu
 
             return;
         }
         private void ButtonTile_Click(object sender, RoutedEventArgs e)
         {
+            //TODO! Remember...
             return;
-        }     
+        }
 
         public List<Phrase> Shuffle<Phrase>(List<Phrase> list) //mixing available dictionary to show first element
         {
@@ -166,7 +228,7 @@ namespace words100
             }
         }
 
-        internal TileContent GetNotificationScheme(string word0, string word1, string word2) //creating tile "XML" file
+        internal TileContent GetNotificationScheme(string word0, string word1, string word2, string word3) //creating tile "XML" file
         {
             //https://docs.microsoft.com/en-us/windows/uwp/design/shell/tiles-and-notifications/create-adaptive-tiles
 
@@ -177,7 +239,7 @@ namespace words100
                     DisplayName = "100 finnish words",
                     Branding = TileBranding.NameAndLogo, //text should be name of dictionary
 
-                    //TileLarge (only for desktop)
+                    //TileLarge (only for desktop) //all languages showed
                     TileLarge = new TileBinding()
                     {
                         Content = new TileBindingContentAdaptive()
@@ -204,6 +266,13 @@ namespace words100
                                     HintStyle = AdaptiveTextStyle.TitleSubtle, //big
                                     HintWrap = true
                                 },
+
+                                new AdaptiveText()
+                                {
+                                    Text = word3,
+                                    HintStyle = AdaptiveTextStyle.TitleSubtle, //big
+                                    HintWrap = true
+                                },
                             }
                         }
                     },
@@ -223,7 +292,7 @@ namespace words100
 
                                 new AdaptiveText()
                                 {
-                                    Text = String.Format("{0} / {1}", word1, word2),
+                                    Text = String.Format("{0} / {1} / {2}", word1, word2, word3),
                                     HintStyle = AdaptiveTextStyle.BodySubtle, //two words on same line, medium
                                     HintWrap = true
                                 },
