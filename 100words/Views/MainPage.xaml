@@ -85,7 +85,7 @@
                                 Margin="0,0,0,20" />
 
                         <TextBlock TextWrapping="WrapWholeWords" TextAlignment="Justify">
-                            <Span xml:space="preserve"><Run>This app is intended for fun and is fan based. Author appreciate new </Run><Hyperlink NavigateUri="https://goo.gl/forms/a72Osyz1Bpu4mqq22">phrase suggestions and correction</Hyperlink><Run>. You can also provide direct feedback and feature suggestions via that link.</Run></Span>
+                            <Span xml:space="preserve"><Run>This app is intended for the fun and it is fan based. Author appreciates new </Run><Hyperlink NavigateUri="https://goo.gl/forms/a72Osyz1Bpu4mqq22">phrase suggestions and corrections</Hyperlink><Run>. You can also provide direct feedback and feature advice via that link.</Run></Span>
                         </TextBlock>
 
                         <TextBlock Text="{Binding .}"/>
