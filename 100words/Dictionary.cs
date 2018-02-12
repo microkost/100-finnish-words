@@ -7,7 +7,7 @@ namespace words100
         public static List<string> GetListOfLanguages() 
         {
             List<string> lang = new List<string>(); //manually managed
-            //if less than 3 then update code! (index null reference)
+            //if less than 4 then update code! (index null reference)
             lang.Add("Finnish");
             lang.Add("English");
             lang.Add("Czech");

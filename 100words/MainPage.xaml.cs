@@ -6,6 +6,10 @@ using Windows.UI.Xaml.Controls;
 using Windows.UI.Notifications;
 using Microsoft.Toolkit.Uwp.Notifications; //tile design library
 using Windows.UI.Xaml.Media.Imaging;
+using Windows.Foundation.Metadata;
+using Windows.ApplicationModel.Core;
+using Windows.ApplicationModel;
+using Windows.UI.StartScreen;
 
 namespace words100
 {
@@ -80,16 +84,16 @@ namespace words100
             return;
         }
 
-        public void MakePhraseVisible(Phrase phrase, List<String> specifiedOrder)
+        public void MakePhraseVisible(Phrase phrase, List<String> specifiedOrder) //show phrase to user in defined order
         {
             if (specifiedOrder.Count < 4) //cannot use then...
             {
                 MakePhraseVisible(phrase);
             }
 
-            List<Tuple<string, string>> phraseInOrder = new List<Tuple<string, string>>();
+            List<Tuple<string, string>> phraseInOrder = new List<Tuple<string, string>>(); //word + proper flag set
 
-            for(int i = 0; i < Dictionary.GetListOfLanguages().Count(); i++)
+            for(int i = 0; i < Dictionary.GetListOfLanguages().Count(); i++) //parse order with actual word
             {
                 if (specifiedOrder[i].Equals("Finnish"))
                 {
@@ -116,6 +120,7 @@ namespace words100
                 }
             }
 
+            //set resources to GUI
             Word0.Text = phraseInOrder[0].Item1;
             Word0Flag.Source = new BitmapImage(new Uri(phraseInOrder[0].Item2, UriKind.Absolute));
             Word1.Text = phraseInOrder[1].Item1;
@@ -125,6 +130,7 @@ namespace words100
             Word3.Text = phraseInOrder[3].Item1;
             Word3Flag.Source = new BitmapImage(new Uri(phraseInOrder[3].Item2, UriKind.Absolute));
 
+            //create live tile
             var notification = new TileNotification(GetNotificationScheme(phraseInOrder[0].Item1, phraseInOrder[1].Item1, phraseInOrder[2].Item1, phraseInOrder[3].Item1).GetXml());
             //notification.ExpirationTime = DateTimeOffset.UtcNow.AddMinutes(1); //how long from active to just logo
             TileUpdateManager.CreateTileUpdaterForApplication().Update(notification);
@@ -155,25 +161,47 @@ namespace words100
             dispatcherTimer.Start(); //let's go again
 
             //lang selection
-            List<String> langOrder = new List<String>();
-            langOrder.Add(Language1.SelectedItem.ToString());
-            langOrder.Add(Language2.SelectedItem.ToString());
-            langOrder.Add(Language3.SelectedItem.ToString());
-            langOrder.Add(Language4.SelectedItem.ToString());
+            List<String> langOrder = new List<String>
+            {
+                Language1.SelectedItem.ToString(),
+                Language2.SelectedItem.ToString(),
+                Language3.SelectedItem.ToString(),
+                Language4.SelectedItem.ToString()
+            };
             languages = langOrder; //save globally for later usage (refresh)
 
             MakePhraseVisible(vocabulary.First(), languages); //process that list
-            localSettings.Values["100wordsLanguageOrder"] = languages.ToArray(); //save it for restart
+            localSettings.Values["100wordsLanguageOrder"] = languages.ToArray(); //save it for next start
 
-            //some confirmation?
+            //some confirmation for user?
             MenuSettingsChangeVisibility(); //close menu
 
             return;
         }
-        private void ButtonTile_Click(object sender, RoutedEventArgs e)
+        private async void ButtonTile_ClickAsync(object sender, RoutedEventArgs e)
         {
-            //TODO! Remember...
-            return;
+            //https://docs.microsoft.com/en-us/windows/uwp/design/shell/tiles-and-notifications/primary-tile-apis
+            if (ApiInformation.IsTypePresent("Windows.UI.StartScreen.StartScreenManager"))
+            {
+                // Primary tile API's supported!
+
+                // Get your own app list entry
+                // (which is always the first app list entry assuming you are not a multi-app package)
+                AppListEntry entry = (await Package.Current.GetAppListEntriesAsync())[0];                
+
+                // Check if Start supports your app
+                bool isSupported = StartScreenManager.GetDefault().SupportsAppListEntry(entry);
+
+                // Check if your app is currently pinned
+                bool isPinned = await StartScreenManager.GetDefault().ContainsAppListEntryAsync(entry);
+
+                // And pin it to Start
+                isPinned = await StartScreenManager.GetDefault().RequestAddAppListEntryAsync(entry);
+            }
+            else
+            {
+                // Older version of Windows, no primary tile API's
+            }
         }
 
         public List<Phrase> Shuffle<Phrase>(List<Phrase> list) //mixing available dictionary to show first element
