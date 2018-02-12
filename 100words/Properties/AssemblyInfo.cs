@@ -6,11 +6,11 @@ using System.Runtime.InteropServices;
 // General Information about an assembly is controlled through the following 
 // set of attributes. Change these attribute values to modify the information
 // associated with an assembly.
-[assembly: AssemblyTitle("100 Finnish Words")]
-[assembly: AssemblyDescription("First 100 words are most important of learning finnish language.")]
+[assembly: AssemblyTitle("100 words")]
+[assembly: AssemblyDescription("First 100 words are most important of learning any language.")]
 [assembly: AssemblyConfiguration("")]
 [assembly: AssemblyCompany("ivo@kostecky.cz")]
-[assembly: AssemblyProduct("100words")]
+[assembly: AssemblyProduct("100 words (FIN-CZ-PL-EN)")]
 [assembly: AssemblyCopyright("Copyright ©  2018")]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]
