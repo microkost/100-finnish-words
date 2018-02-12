@@ -16,10 +16,10 @@ You can learn any 100 words from supported language if you understand at least o
 * Open source code
 
 ![100 Finnish words screenshot 1](documentation/screenshot-metro-ui-thumb.png?raw=true "100 words start menu screenshot")
-![100 Finnish words screenshot 2](documentation/screenshot-desktop-thumb?raw=true "100 words desktop app screenshot")
+![100 Finnish words screenshot 2](documentation/screenshot-desktop-thumb.png?raw=true "100 words desktop app screenshot")
 
 ## Supported languages
-Sorted alphabetically [dictionary](https://github.com/microkost/100-finnish-words/blob/master/100words/Dictionary.cs)
+Sorted alphabetically ([dictionary](https://github.com/microkost/100-finnish-words/blob/master/100words/Dictionary.cs))
 * Czech
 * English
 * Finnish
@@ -28,6 +28,7 @@ Sorted alphabetically [dictionary](https://github.com/microkost/100-finnish-word
 In feature thinking about adding
 * Hungarian
 * Swedish
+
 Adding of content is based on availability of language experts and native speakers. [Suggestions and participation requests](https://goo.gl/forms/a72Osyz1Bpu4mqq22).
 Variable and extended (external) dictionary should be provided in update if app fulfill alive conditions and found users OR author will finally learn that words :-). 
 
