@@ -178,7 +178,7 @@ namespace words100
 
             return;
         }
-        private async void ButtonTile_ClickAsync(object sender, RoutedEventArgs e)
+        private async void ButtonTile_Click(object sender, RoutedEventArgs e)
         {
             //https://docs.microsoft.com/en-us/windows/uwp/design/shell/tiles-and-notifications/primary-tile-apis
             if (ApiInformation.IsTypePresent("Windows.UI.StartScreen.StartScreenManager"))
