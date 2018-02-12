@@ -117,11 +117,11 @@
     <None Include="100words_TemporaryKey.pfx" />
   </ItemGroup>
   <ItemGroup>
-    <Content Include="Assets\BadgeLogo.scale-100.png" />
-    <Content Include="Assets\BadgeLogo.scale-125.png" />
-    <Content Include="Assets\BadgeLogo.scale-150.png" />
-    <Content Include="Assets\BadgeLogo.scale-200.png" />
-    <Content Include="Assets\BadgeLogo.scale-400.png" />
+    <Content Include="Assets\BadgeLogo44x44Logo.scale-100.png" />
+    <Content Include="Assets\BadgeLogo44x44Logo.scale-125.png" />
+    <Content Include="Assets\BadgeLogo44x44Logo.scale-150.png" />
+    <Content Include="Assets\BadgeLogo44x44Logo.scale-200.png" />
+    <Content Include="Assets\BadgeLogo44x44Logo.scale-400.png" />
     <Content Include="Assets\BadgeLogo44x44Logo.targetsize-24.png" />
     <Content Include="Assets\BadgeLogo44x44Logo.targetsize-30.png" />
     <Content Include="Assets\BadgeLogo44x44Logo.targetsize-36.png" />
