@@ -94,7 +94,6 @@
 
                         <TextBlock Text="{Binding .}"/>
                         <TextBlock Style="{StaticResource CaptionTextBlockStyle}" TextAlignment="Right">
-                            <Span xml:space="preserve"><Run>Version: v1.1.7.0</Run></Span>
                             <Span xml:space="preserve"><Run>Author: </Run><Hyperlink NavigateUri="http://www.kostecky.cz">Ivo Kostecký</Hyperlink></Span>
                         </TextBlock>
 
