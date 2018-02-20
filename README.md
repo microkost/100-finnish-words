@@ -1,7 +1,9 @@
 # One hundred words
 Is language learning application which learn their users selected basic vocabulary which is necessary to kick-off certain language usage.
 
-> Safely download and install from [Windows Apps - Microsoft Store](https://www.microsoft.com/en-us/store/top-free/apps/pc)
+> 
+> Safely **download** and install from [Windows Apps - Microsoft Store](https://www.microsoft.com/store/productId/9MWRDJGPXZ6Q)
+> 
 
 Idea that 100 most frequent/usable words in any language is based in pop-culture. Academic research wasn't done but it comes from personal observation of trying to learn Finnish as non-native speaker.
 Feature of this app **is having active tile** in Windows 10 start menu **with word and translations** on eyes **with every open of start** menu.
@@ -30,7 +32,7 @@ Sorted alphabetically ([dictionary](https://github.com/microkost/100-finnish-wor
 * Polish
 
 In feature thinking about adding
-* Hungarian
+* German
 * Swedish
 
 Adding of content is based on availability of language experts and native speakers. [Suggestions and participation requests](https://goo.gl/forms/a72Osyz1Bpu4mqq22).
