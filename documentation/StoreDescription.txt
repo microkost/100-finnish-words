@@ -6,21 +6,22 @@
 
 Description:
 Říká se, že naučením se prvních 100 slov ovládnete základy tohoto cizího jazyka. Aplikace vyučuje pasivním způsobem slovní zásobu prostřednictvím nabídky Start, kde vám budou slovíčka stále na očích i s překladem.
-Podporované jazyky: finština, angličtina, polština a čeština. Možnost nastavení vlastního pořadí a času 		změny slovíčka.
+Podporované jazyky: finština, angličtina, polština a čeština. Možnost nastavení vlastního pořadí a času	změny slovíčka.
 
 Once you’ve got the first 100 words in a language down you’re halfway through of overcoming the first steps of learning a language. 
-Supported languages: Finnish, English, Czech, Polish. You can set your own order of showing language and 		refresh time.
+Supported languages: Finnish, English, Czech, Polish. You can set your own order of showing language and refresh time.
 
 Mówi się, że nauka pierwszych 100 słów w nowym języku to połowa sukcesu do opanowania podstaw języka obcego. Aplikacja uczy słownictwa pasywnego za pośrednictwem menu Start w Windows, gdzie można zobaczyć nowe słowa wraz z tłumaczeniem. Obsługiwane języki: fiński, angielski, czeski, polski. Możesz dostosować kolejność i czas zmiany słowa.
 
-On sanottu, että opittuaan kielestä 100 ensimmäistä sanaa, on kielen opiskelu helpompaa. Tuetut kielet: suomi, englanti, tsekki, puola. Voit asettaa oman järjestyksen näyttämään kielen ja asettamaan ajan.
+On sanottu että opittuaan kielestä 100 ensimmäistä sanaa, kielen opiskelusta tulee helpompaa. Tuetut kielet: suomi, englanti, tsekki, puola. Voit asettaa kieliin oman esitysjärjestyksen.
+//old: On sanottu, että opittuaan kielestä 100 ensimmäistä sanaa, on kielen opiskelu helpompaa. Tuetut kielet: suomi, englanti, tsekki, puola. Voit asettaa oman järjestyksen näyttämään kielen ja asettamaan ajan.
+
 
 Screenshots (image captions)
 	Takto vypadá aplikace zapnutá na počítači.
 	How looks app on computer in desktop mode.
 	Jak wygląda aplikacja na komputerze.
 	Miltä sovellus näyttää tietokoneen työpöytätilassa.
-
 
 	Hlavní výhoda je v zobrazení slov v nabídce start v systému Windows.
 	The main advantage is in showing words on the Start menu in Windows.
