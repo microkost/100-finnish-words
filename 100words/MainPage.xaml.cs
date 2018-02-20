@@ -18,6 +18,7 @@ namespace words100
         List<String> languages; //names of available languages, index numbers are keys
         List<Phrase> vocabulary; //globally used vocabulary
         DispatcherTimer dispatcherTimer; //refresh values event countdown
+        Double timerRefreshValueinMinutes = 120;
         private static Random rng = new Random();
 
         //permanent settings in computer
@@ -44,12 +45,14 @@ namespace words100
             {
                 DispatcherTimerSetup(TimeSpan.FromHours(timerValue)); //(hh:mm:ss)
                 UpdateTime.Text = timerValue.ToString();
+                timerRefreshValueinMinutes = timerValue;
             }
             else //failure
             {
                 int value = 120;
                 DispatcherTimerSetup(new TimeSpan(0, value, 0)); //set time default when not saved (hh:mm:ss)
                 UpdateTime.Text = value.ToString();
+                timerRefreshValueinMinutes = value;
             }
 
             //should do notification when change
@@ -129,12 +132,15 @@ namespace words100
             Word2Flag.Source = new BitmapImage(new Uri(phraseInOrder[2].Item2, UriKind.Absolute));
             Word3.Text = phraseInOrder[3].Item1;
             Word3Flag.Source = new BitmapImage(new Uri(phraseInOrder[3].Item2, UriKind.Absolute));
-
-            //create live tile
+            
+            //Create a tile update manager for the specified syndication feed.
+            var updater = TileUpdateManager.CreateTileUpdaterForApplication();
+            updater.EnableNotificationQueue(true);
+            updater.Clear();            
             var notification = new TileNotification(GetNotificationScheme(phraseInOrder[0].Item1, phraseInOrder[1].Item1, phraseInOrder[2].Item1, phraseInOrder[3].Item1).GetXml());
-            //notification.ExpirationTime = DateTimeOffset.UtcNow.AddMinutes(1); //how long from active to just logo
-            TileUpdateManager.CreateTileUpdaterForApplication().Update(notification);
-
+            notification.ExpirationTime = DateTimeOffset.UtcNow.AddMinutes(timerRefreshValueinMinutes); //how long from active to just logo
+            updater.Update(notification);
+                       
             return;
         }
 
@@ -178,6 +184,7 @@ namespace words100
 
             return;
         }
+
         private async void ButtonTile_Click(object sender, RoutedEventArgs e)
         {
             //https://docs.microsoft.com/en-us/windows/uwp/design/shell/tiles-and-notifications/primary-tile-apis
